@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+
+	<select id="select_allMember" parameterType="hashMap" resultType="hashMap">
+		<![CDATA[
+			select * from member where accLv='0'
+		]]>
+		<if test="keyWord != ''">
+			and ${keyField} like CONCAT('%',#{keyWord},'%')
+		</if>
+		<![CDATA[	
+			order by num desc limit #{start},#{end}
+		]]>
+	</select>
+	
+	
+	
+	
+
+	<select id="select_listCount" parameterType="hashMap"
+		resultType="int">
+			<![CDATA[
+			select count(*) from member where accLv='0'
+		]]>
+		<if test="keyWord != ''">
+			and ${keyField} like CONCAT('%',#{keyWord},'%')
+		</if>
+
+	</select>
+	
+	<update id="update_modMember" parameterType="hashMap" >
+		<![CDATA[
+			update member
+			set uPw=#{uPw}, uName=#{uName}, uEmail=#{uEmail},
+			gender=#{gender}, uBirthday=#{uBirthday}, uZipcode=#{uZipcode}, uAddr=#{uAddr}
+			where uId=#{uId}
+		]]>
+	</update>
+
+</mapper>

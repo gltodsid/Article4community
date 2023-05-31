@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notice">
+
+	<insert id="insert_notice" parameterType="hashMap"
+		useGeneratedKeys="true" keyProperty="no">
+		<![CDATA[
+			insert into notice(writer, title,content,fileName,fileSize,regtime)
+			values(#{writer}, #{title}, #{content}, #{fileName},#{fileSize}, now())
+		]]>
+	</insert>
+
+
+	<select id="select_list" parameterType="hashMap"
+		resultType="hashMap">
+		<![CDATA[
+			select * from notice 
+		]]>
+		<if test="keyWord != ''">
+			where ${keyField} like CONCAT('%',#{keyWord},'%')
+		</if>
+		<![CDATA[	
+			order by num desc
+		]]>
+	</select>
+
+	<select id="select_listCount" parameterType="hashMap"
+		resultType="int">
+			<![CDATA[
+			select count(*) from notice
+		]]>
+		<if test="keyWord != ''">
+			where ${keyField} like CONCAT('%',#{keyWord},'%')
+		</if>
+
+	</select>
+
+	<update id="update_readCount" parameterType="int">
+		<![CDATA[
+			update notice set readCnt=readCnt+1 where num=#{numParam}
+		]]>
+	</update>
+
+	<select id="select_read" parameterType="int"
+		resultType="hashMap">
+		<![CDATA[
+			select * from notice where num= #{numParam}
+		]]>
+	</select>
+
+	<update id="update_notice" parameterType="hashMap">
+		<![CDATA[
+			update notice set title=#{title}, content=#{content} where num=#{num}
+		]]>
+	</update>
+
+	<delete id="delete_notice" parameterType="int">
+		<![CDATA[
+			delete from notice where num = #{numParam}
+		]]>
+	</delete>
+
+</mapper>

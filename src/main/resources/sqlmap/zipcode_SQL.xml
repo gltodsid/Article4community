@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zipcode">
+	<select id="selectAll" resultType="hashMap">
+		<![CDATA[
+			select * from tblzipcode where area3 like CONCAT('%',#{area3},'%')
+		]]>
+	</select>
+</mapper>

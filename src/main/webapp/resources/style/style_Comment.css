@@ -1,0 +1,48 @@
+@charset "UTF-8";
+#div0{
+		width:810px;
+		margin-left: 160px;
+		margin-bottom: 10px;
+	}
+
+	#div1{
+		width: 100%;
+		height: 160px;
+		margin-top: 10px;
+	}
+	#div2{
+		padding: 20px;
+		margin: 10px;
+		border: 3px solid lightgray;
+		height: 80%;
+		border-radius: 7px;
+	}
+	textarea{
+		width: 90%;
+		border:none;
+		resize:none;
+		border-radius: 7px;
+		padding-top: 5px;
+		margin-top: 10px;
+		outline: none;
+	}
+
+	#commList>ul{
+		border-bottom: 1px solid lightgray;
+		background: rgba(249,249,250);
+		padding : 15px 20px;
+	}
+	
+	#commList>ul>li{
+		margin: 10px 0;
+	}
+	
+	.li{
+		color:gray;
+	}
+	.li a{
+		color:gray;
+	}
+	.comm{
+	text-align: right;
+	}

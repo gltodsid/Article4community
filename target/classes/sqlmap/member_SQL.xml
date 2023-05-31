@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+	<insert id="insert" parameterType="hashMap" useGeneratedKeys="true" keyProperty="num">
+		<![CDATA[
+			insert into member (uId, uPw, uName, uEmail, gender, uBirthday, uZipcode, uAddr, uHobby, uJob, joinTM)
+			values(#{uId}, #{uPw}, #{uName}, #{uEmail}, #{gender}, #{uBirthday}, #{uZipcode}, #{uAddr}, #{uHobby}, #{uJob}, now())
+		]]>
+	</insert>
+	
+	<select id="select_login" parameterType="hashMap" resultType="hashMap">
+		<![CDATA[
+			select * from member where uId=#{uId} and uPw=#{uPw}
+		]]>
+	</select>
+	
+	<select id="select_idCheck" parameterType="String" resultType="int">
+		<![CDATA[
+			select count(*) from member where uId=#{uId}
+		]]>
+	</select>
+	
+	<select id="select_myPage" parameterType="String" resultType="hashMap">
+		<![CDATA[
+			select * from member where uId=#{uId}
+		]]>
+	</select>
+	
+	
+	
+	<update id="update_modMember" parameterType="hashMap" >
+		<![CDATA[
+			update member
+			set uName=#{uName}, uEmail=#{uEmail},
+			gender=#{gender}, uBirthday=#{uBirthday}, uZipcode=#{uZipcode}, uAddr=#{uAddr}
+			where uId=#{uId}
+		]]>
+	</update>
+	
+	<delete id="delete_member" parameterType="String">
+		<![CDATA[
+			delete from member
+			where uId=#{uId}
+		]]>
+	</delete>
+	
+	<select id="select_myBoard" parameterType="hashMap" resultType="hashMap">
+		<![CDATA[
+			select * from tblBoard where uId = #{uId} and useTbl = 'Y'
+		]]>
+		<if test="keyWord != ''">
+					and ${keyField} like CONCAT('%',#{keyWord},'%')
+		</if>
+		<![CDATA[	
+			order by ref desc, pos limit #{start},#{end}
+		]]>
+	</select>
+	
+	<select id="select_myBoardCount" parameterType="hashMap" resultType="int">
+			<![CDATA[
+			select count(*) from tblBoard where uId = #{uId} and useTbl = 'Y'
+		]]>
+		<if test="keyWord != ''">
+			and ${keyField} like CONCAT('%',#{keyWord},'%')
+		</if>
+	</select>
+	
+	<select id="select_pwCheck" parameterType="hashMap" resultType="int">
+			<![CDATA[
+			select count(*) from member where uId = #{uId} and uPw = #{uPw}
+		]]>
+	</select>
+	
+	<update id="update_modPw" parameterType="hashMap" >
+		<![CDATA[
+			update member
+			set uPw=#{uPw}
+			where uId=#{uId}
+		]]>
+	</update>
+	
+	
+</mapper>

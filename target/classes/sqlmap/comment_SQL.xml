@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="comments">
+
+	<select id="maxnum" resultType="int">
+	<![CDATA[
+		select Auto_increment from information_schema.tables where table_schema = 'community' and table_name = 'comments'
+		]]>
+	</select>
+
+	<insert id="insert_comments" parameterType="hashMap"
+				useGeneratedKeys="true" keyProperty="num">
+		insert into comments(tableNum, tableType, uId, content, pos, ref, depth, ip)
+		values(#{tableNum}, #{tableType}, #{uId}, #{content}, 0, #{ref}, 0, #{ip})
+	</insert>
+	
+	<select id="select_commentsList" parameterType="hashMap" resultType="hashMap">
+		<![CDATA[
+			select num,tableNum,tableType,uId,content,pos,ref,depth,DATE_FORMAT(regTM,'%Y.%m.%d.%H:%i:%s')as regTM,ip from comments 
+			where tableNum = #{tableNum} and tableType = #{tableType}
+			order by ref,pos
+		]]>
+	</select>
+	
+	<insert id="insert_commentsReply" parameterType="hashMap" useGeneratedKeys="true" keyProperty="num">
+		insert into comments(tableNum, tableType, uId, content, pos, ref, depth, ip)
+		values(#{tableNum}, #{tableType}, #{uId}, #{content}, #{maxPos}+1, #{ref}, #{depth}+1, #{ip})
+	</insert>
+	
+	<update id="update_before_reply" parameterType="hashMap">
+		<![CDATA[
+			update comments set pos=pos+1 where ref = #{ref} and pos > #{maxPos}
+		]]>
+	</update>
+	
+	<select id="select_maxPos" parameterType="hashMap" resultType="int">
+		<![CDATA[
+			select max(pos) from comments where ref = #{ref} and depth = #{depth}+1 and pos > #{pos}
+		]]>
+	</select>
+	
+</mapper>
